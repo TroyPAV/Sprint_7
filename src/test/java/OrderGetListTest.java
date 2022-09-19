@@ -1,5 +1,6 @@
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import order.OrderCheck;
 import order.OrderClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +12,12 @@ import static org.junit.Assert.assertTrue;
 
 public class OrderGetListTest {
     OrderClient orderClient;
+    OrderCheck orderCheck;
 
     @Before
     public void setUp() {
         orderClient = new OrderClient();
+        orderCheck = new OrderCheck();
     }
 
     @Test
@@ -25,7 +28,7 @@ public class OrderGetListTest {
                 .statusCode(200)
                 .extract()
                 .path("orders");
-        boolean checkList = orderClient.check(ordersList);
+        boolean checkList = orderCheck.check(ordersList);
         assertTrue(checkList);
     }
 }

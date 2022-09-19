@@ -7,6 +7,7 @@ public class CourierClient extends BaseClient {
     private final String ROOT = "/courier";
     private final String COURIER = ROOT + "/{courierId}";
     private final String LOGIN = ROOT + "/login";
+    private int courierId;
 
     public ValidatableResponse create(Courier courier) {
         return getSpec()
@@ -36,5 +37,10 @@ public class CourierClient extends BaseClient {
                 .when()
                 .delete(COURIER)
                 .then().log().all();
+    }
+
+    public void tearDown(CourierCredentials creds) {
+        courierId = getId(creds);
+        delete(courierId);
     }
 }

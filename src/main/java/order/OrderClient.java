@@ -4,14 +4,9 @@ import courier.BaseClient;
 
 import io.restassured.response.ValidatableResponse;
 
-import java.util.HashMap;
-import java.util.List;
-
 public class OrderClient extends BaseClient {
 
     private final String ROOT = "/orders";
-    private boolean listIsNotEmptyAndNotNull;
-
 
     public ValidatableResponse create(Order order) {
         return getSpec()
@@ -26,14 +21,5 @@ public class OrderClient extends BaseClient {
                 .when()
                 .get(ROOT)
                 .then().log().all();
-    }
-
-    public boolean check(List<HashMap> ordersList) {
-        ordersList.forEach(list -> {
-            if (list != null && !list.isEmpty()) {
-                listIsNotEmptyAndNotNull = true;
-            }
-        });
-        return listIsNotEmptyAndNotNull;
     }
 }

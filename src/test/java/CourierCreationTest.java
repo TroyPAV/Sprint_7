@@ -13,7 +13,7 @@ public class CourierCreationTest {
     Courier courier;
     CourierClient courierClient;
     CourierCredentials creds;
-    private int courierId;
+
 
     @Before
     public void setUp() {
@@ -29,13 +29,11 @@ public class CourierCreationTest {
         courierClient
                 .create(courier)
                 .statusCode(201);
-
-        courierId = courierClient.getId(creds);
-        courierClient.delete(courierId);
+        courierClient.tearDown(creds);
     }
 
     @Test
-    @DisplayName("Создаие курьера с обязательными полями")
+    @DisplayName("Создание курьера с обязательными полями")
     @Description("Проверка создания курьера при передаче в теле запроса валидных значений: login и password")
     public void courierIsCreatedWithRequiredFields() {
         courier = Courier.getCourierWithoutFirstName();
@@ -44,8 +42,7 @@ public class CourierCreationTest {
                 .statusCode(201);
 
         creds = CourierCredentials.from(courier);
-        courierId = courierClient.getId(creds);
-        courierClient.delete(courierId);
+        courierClient.tearDown(creds);
     }
 
     @Test
@@ -57,9 +54,7 @@ public class CourierCreationTest {
                 .extract()
                 .path("ok");
         assertTrue(isOk);
-
-        courierId = courierClient.getId(creds);
-        courierClient.delete(courierId);
+        courierClient.tearDown(creds);
     }
 
     @Test
@@ -93,6 +88,7 @@ public class CourierCreationTest {
         courierClient.create(courier);
         courierClient.create(courier)
                 .statusCode(409);
+        courierClient.tearDown(creds);
     }
 
     @Test
@@ -106,5 +102,6 @@ public class CourierCreationTest {
                 .extract()
                 .path("message");
         assertEquals("Этот логин уже используется", message);
+        courierClient.tearDown(creds);
     }
 }
